@@ -1,0 +1,9 @@
+# DO NOT REMOVE FIRST 5 LINES
+trackName=Mansion
+
+raceID=44
+
+player,time
+Wilbur,2:22.658
+Puffy,2:45.102
+Nolok,2:45.829

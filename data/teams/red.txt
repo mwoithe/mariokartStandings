@@ -1,0 +1,4 @@
+name=red
+member=Emule
+member=Amanda
+member=Nolok

@@ -1,0 +1,4 @@
+name=blue
+member=Wilbur
+member=Gnu
+member=Puffy

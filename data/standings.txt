@@ -1,0 +1,3 @@
+	Team	Points	Time
+1	blue	39	31:20.187
+2	red	33	31:46.682
