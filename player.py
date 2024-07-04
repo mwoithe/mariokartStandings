@@ -1,32 +1,17 @@
-from mtime import Time
-
 class Player:
     def __init__(self, name):
         self.name = name
-        self.fileName = "Tournament/data/players/"+name+".csv"
+        self.fileName = "data/players/"+name+".csv"
         self.points = self.calcPlayerScore()
-        self.cumulativeTime = self.calcPlayerTime()
     
     def __lt__(self, other):
-        if self.points < other.points:
-            return True
-        elif self.points == other.points:
-            # If level on points, the player with the least time is higher
-            return self.cumulativeTime > other.cumulativeTime
-        else:
-            return False
+        return self.points < other.points
         
     def __gt__(self, other):
-        if self.points > other.points:
-            return True
-        elif self.points == other.points:
-            # If level on points, the player with the least time is higher
-            return self.cumulativeTime < other.cumulativeTime
-        else:
-            return False
+        return self.points > other.points
         
     def __eq__(self, other):
-        return (self.points == other.points) and (self.cumulativeTime == other.cumulativeTime)
+        return self.points == other.points
     
 
     def getPlayerData(self):
@@ -46,17 +31,15 @@ class Player:
         data = self.getPlayerData()[1:]
         score = 0
         for row in data:
-            score += int(row[5])
-        # self.score = score
+            score += int(row[4])
         return score
     
-    def calcPlayerTime(self):
-        data = self.getPlayerData()[1:]
-        time = Time(0,0,0)
-        for row in data:
-            time += Time.readTime(row[3])
-        # self.cumulativeTime = time
-        return time
+    def logRaceResult(self, result):
+        # "name,raceID,track,placing,points"
+        log = f"\n{self.name},{result.raceID},{result.track},{result.placing},{result.points}"
+        f = open(self.fileName, "a")
+        f.write(log)
+        f.close()
 
 # p = Player("Wilbur")
 

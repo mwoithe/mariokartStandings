@@ -29,18 +29,18 @@ class Init:
         pass
 
     def initPlayers(self, names):
-        opening = "name,raceID,track,time,placing,points"
+        opening = "name,raceID,track,placing,points"
 
         for playerName in names:
             # create new file
-            f = open("Tournament/data/players/"+playerName+".csv", "w")
+            f = open("data/players/"+playerName+".csv", "w")
             f.write(opening)
             f.close()
 
     def initTeams(self, teams):
         for teamName in teams:
             # create new file
-            f = open("Tournament/data/teams/"+teamName+".txt", "w")
+            f = open("data/teams/"+teamName+".txt", "w")
             f.write("name="+teamName+"\n")
             f.close()
 

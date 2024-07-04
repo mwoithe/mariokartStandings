@@ -12,14 +12,14 @@ class Standings:
             teams.append(Team(name))
         
         teams.sort(reverse=True)
-        message = "\tTeam\tPoints\tTime\n"
+        message = "\tTeam\tPoints\n"
         pos = 1
         for team in teams:
-            message += f"{pos}\t{team.name}\t{team.points}\t{team.cumulativeTime}\n"
+            message += f"{pos}\t{team.name}\t{team.points}\n"
             pos += 1
         
         print(message)
-        f = open("Tournament/data/standings.txt", "w")
+        f = open("data/standings.txt", "w")
         f.write(message)
         f.close()
 
@@ -31,18 +31,18 @@ class Standings:
             players.append(Player(name))
 
         players.sort(reverse=True)
-        message = "\tPlayer\tPoints\tTime\n"
+        message = "\tPlayer\tPoints\n"
         pos = 1
         for player in players:
-            message += f"{pos}\t{player.name}\t{player.points}\t{player.cumulativeTime}\n"
+            message += f"{pos}\t{player.name}\t{player.points}\n"
             pos += 1
         
         print(message)
-        f = open("Tournament/data/standings.txt", "w")
+        f = open("data/standings.txt", "w")
         f.write(message)
         f.close()
         
 
 s = Standings()
-# s.displayIndStandings()
+s.displayIndStandings()
 s.displayTeamStandings()

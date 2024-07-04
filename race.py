@@ -1,18 +1,18 @@
-from mtime import Time
+from player import Player
 from init import Init
 from raceResult import Result
 import re
 import exceptions as e
 
 class Race:
-    dataFile = "Tournament/data/resultInput.txt"
+    dataFile = "data/resultInput.txt"
 
     def __init__(self):
         if self.checkData():
             self.track = None
             self.id = None
-            self.readData()
-            pass
+            if self.readData():
+                input("Data logging complete")
         else:
             input("Insertion cancelled [press enter to exit]")
     
@@ -20,10 +20,11 @@ class Race:
         print("\n----------------------------------------\n",
               "Checking race data:")
         
-        f = open(Race.dataFile, "r")
+        f = open("data/resultInput.txt", "r")
+        
         file = f.read()
         f.close()
-        t = file.split("player,time\n")
+        t = file.split("player,placing\n")
         
         # deal with the key: values
         info = t[0]
@@ -55,7 +56,7 @@ class Race:
         # Deal with the player times
         raceData = t[1]
         times = raceData.split("\n")
-        res = []
+
         entry = 1
         for time in times:
             test = time.split(",")
@@ -70,9 +71,12 @@ class Race:
                         raise e.DataInputError(Race.dataFile, f"Something's wrong with data entry #{entry}: {test[0]} is not a listed player")
                     
                     try:
-                        Time.readTime(test[1])
-                    except e.InvalidTimeException as fail:
-                        raise e.DataInputError(Race.dataFile, f"Something's wrong with data entry #{entry}: {test[1]} is not a readable time value")
+                        place = int(test[1])
+                        if not 1 <= place <= len(Init.playerList):
+                            raise ValueError
+                    except ValueError:
+                        raise e.DataInputError(Race.dataFile, f"Something's wrong with data entry #{entry}: '{test[1]}' is not a valid placing")
+                    # int(test[1])
                     
                     print(f"Data entry #{entry} OK")
             
@@ -93,7 +97,7 @@ class Race:
         f = open(Race.dataFile, "r")
         file = f.read()
         f.close()
-        t = file.split("player,time\n")
+        t = file.split("player,placing\n")
         
         # deal with the key: values
         info = t[0]
@@ -106,14 +110,26 @@ class Race:
         id = re.findall("raceID=[0-9]+", info)
         self.id = int(id[0][7:])
 
-        # Deal with the player times
+        # Deal with the player placings
         raceData = t[1]
-        times = raceData.split("\n")
+        placings = raceData.split("\n")
         res = []
-        for time in times:
-            res.append(Result(time))
+        for place in placings:
+            res.append(Result(place, self.track, self.id))
         
         res.sort(reverse=True)
+        f = open("data/races/" + str(self.id) + self.track + ".csv", "w")
+        f.write("player,placing,points")
+
+        for result in res:
+            f.write(f"\n{result.name},{result.placing},{result.points}")
+            p = Player(result.name)
+            p.logRaceResult(result)
+        
+        f.close()
+
+        return True
+
         
 
 

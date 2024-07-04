@@ -1,35 +1,21 @@
-from mtime import Time
 from player import Player
-import re
 
 class Team:
     def __init__(self, teamName):
         self.name = teamName
-        self.fileName = "Tournament/data/teams/"+teamName+".txt"
+        self.fileName = "data/teams/"+teamName+".txt"
         self.members = self.getTeamMembers()
         self.points = self.calculateTeamScore()
-        self.cumulativeTime = self.calculateTeamTime()
+        # self.cumulativeTime = self.calculateTeamTime()
     
     def __lt__(self, other):
-        if self.points < other.points:
-            return True
-        elif self.points == other.points:
-            # If level on points, the team with the least time is higher
-            return self.cumulativeTime > other.cumulativeTime
-        else:
-            return False
+        return self.points < other.points
         
     def __gt__(self, other):
-        if self.points > other.points:
-            return True
-        elif self.points == other.points:
-            # If level on points, the team with the least time is higher
-            return self.cumulativeTime < other.cumulativeTime
-        else:
-            return False
+        return self.points > other.points
         
     def __eq__(self, other):
-        return (self.points == other.points) and (self.cumulativeTime == other.cumulativeTime)
+        return self.points == other.points
     
 
     def showTeamReport(self):
@@ -39,7 +25,7 @@ class Team:
         """
         Extracts the team's members from the team data file, and returns them as a String array
         """
-        f = open("Tournament/data/teams/"+self.name+".txt", "r")
+        f = open(self.fileName, "r")
         data = f.read().split("\n")
         f.close()
         
@@ -50,8 +36,6 @@ class Team:
         
         return members
     
-    
-
     def calculateTeamScore(self):
         points = 0
         for name in self.getTeamMembers():
@@ -60,13 +44,13 @@ class Team:
         
         return points
 
-    def calculateTeamTime(self):
-        time = Time(0,0,0)
-        for name in self.getTeamMembers():
-            p = Player(name)
-            time += p.calcPlayerTime()
+    # def calculateTeamTime(self):
+    #     time = Time(0,0,0)
+    #     for name in self.getTeamMembers():
+    #         p = Player(name)
+    #         time += p.calcPlayerTime()
         
-        return time
+    #     return time
         
 
 
