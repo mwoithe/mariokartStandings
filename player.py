@@ -11,13 +11,52 @@ class Player:
         self.spoons = self.calcPlayerSpoons()
     
     def __lt__(self, other):
-        return self.points < other.points 
+        if self.points < other.points:
+            return True
+        elif self.points == other.points:
+            # if points are equal, rank on wins
+            if self.wins < other.wins:
+                return True
+            elif self.wins == other.wins:
+                # If wins are equal, rank on podium finishes 
+                if self.podiums < other.podiums:
+                    return True
+                elif self.podiums == other.podiums:
+                    # If it gets to here, the player with the most last places is lower
+                    return self.spoons > other.spoons
+                else:
+                    return False
+            else:
+                return False
+        else:
+            return False
         
     def __gt__(self, other):
-        return self.points > other.points
+        if self.points > other.points:
+            return True
+        elif self.points == other.points:
+            # if points are equal, rank on wins
+            if self.wins > other.wins:
+                return True
+            elif self.wins == other.wins:
+                # If wins are equal, rank on podium finishes 
+                if self.podiums > other.podiums:
+                    return True
+                elif self.podiums == other.podiums:
+                    # If it gets to here, the player with the least last places is higher
+                    return self.spoons < other.spoons
+                else:
+                    return False
+            else:
+                return False
+        else:
+            return False
         
     def __eq__(self, other):
-        return self.points == other.points
+        return (self.points == other.points and
+                self.wins == other.wins and
+                self.podiums == other.podiums and
+                self.spoons == other.spoons)
     
     def logRaceResult(self, result):
         # "name,raceID,track,placing,points"
@@ -36,7 +75,6 @@ class Player:
         for line in lines:
             data.append(line.split(","))
             
-        # print( data)
         return data
     
     def calcPlayerScore(self):
@@ -69,11 +107,3 @@ class Player:
             if row[3] == str(Init.numPlayers):
                 spoons += 1
         return spoons
-
-    
-
-# p = Player("Wilbur")
-
-# print(p.calcPlayerScore())
-# print(p.calcPlayerWins())
-# print(p.calcPlayerSpoons())

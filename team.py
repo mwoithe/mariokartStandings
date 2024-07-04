@@ -13,15 +13,53 @@ class Team:
         
     
     def __lt__(self, other):
-        return self.points < other.points
+        if self.points < other.points:
+            return True
+        elif self.points == other.points:
+            # if points are equal, rank on wins
+            if self.wins < other.wins:
+                return True
+            elif self.wins == other.wins:
+                # If wins are equal, rank on podium finishes 
+                if self.podiums < other.podiums:
+                    return True
+                elif self.podiums == other.podiums:
+                    # If it gets to here, the team with the most last places is lower
+                    return self.spoons > other.spoons
+                else:
+                    return False
+            else:
+                return False
+        else:
+            return False
         
     def __gt__(self, other):
-        return self.points > other.points
+        if self.points > other.points:
+            return True
+        elif self.points == other.points:
+            # if points are equal, rank on wins
+            if self.wins > other.wins:
+                return True
+            elif self.wins == other.wins:
+                # If wins are equal, rank on podium finishes 
+                if self.podiums > other.podiums:
+                    return True
+                elif self.podiums == other.podiums:
+                    # If it gets to here, the team with the least last places is higher
+                    return self.spoons < other.spoons
+                else:
+                    return False
+            else:
+                return False
+        else:
+            return False
         
     def __eq__(self, other):
-        return self.points == other.points
+        return (self.points == other.points and
+                self.wins == other.wins and
+                self.podiums == other.podiums and
+                self.spoons == other.spoons)
     
-
     def showTeamReport(self):
         pass
     
@@ -71,58 +109,4 @@ class Team:
             spoons += p.spoons
         
         return spoons
-
-
-
-
-###################################################################################################
-
-    # This may be surplus to requirements
-    def getPlayerData(self, playerName):
-        # check that player is in this team
-        found = False
-        for name in self.getTeamMembers():
-            if name == playerName:
-                found = True
-                break
-        
-        if found:
-            # create new player instance with playerName
-            p = Player(playerName)
-
-            # call player's getData method
-            return p.getPlayerData()
-        # 
-
-    # in hindsight, this is probably unnecessary
-    def addPlayer(self, playerName):
-        i = input(f"Are you sure you want to add player {playerName} to team {self.name}? ")
-        if i == "yes":
-            f = open("Tournament/data/teams/"+self.name+".txt", "r")
-            if f.read().__contains__("member="+playerName):
-                input("Operation cancelled. Player may already exist in that team. \nplease check and try again")
-            else:
-                f = open("Tournament/data/teams/"+self.name+".txt", "a")
-                f.write("\nmember="+playerName)
-                print("player added")
-            f.close()
-        else:
-            input("Operation cancelled")
-        
     
-        
-
-
-
-
-
-        
-
-
-
-# t1 = Team("team Fred", 19, Time(1,3,9))
-# t2 = Team("team Daniel", 19, Time(1,9,1))
-# t = Team("t")
-# print(t.calculateTeamScore(), t.calculateTeamTime())
-
-# print(t1 > t2)
