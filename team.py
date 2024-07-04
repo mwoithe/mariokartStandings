@@ -1,12 +1,16 @@
 from player import Player
 
 class Team:
-    def __init__(self, teamName):
+    def __init__(self, teamName, form=-1):
         self.name = teamName
         self.fileName = "data/teams/"+teamName+".txt"
+        self.form = form
         self.members = self.getTeamMembers()
-        self.points = self.calculateTeamScore()
-        # self.cumulativeTime = self.calculateTeamTime()
+        self.points = self.calcTeamScore()
+        self.wins = self.calcTeamWins()
+        self.podiums = self.calcTeamPodiums()
+        self.spoons = self.calcTeamSpoons()
+        
     
     def __lt__(self, other):
         return self.points < other.points
@@ -36,23 +40,37 @@ class Team:
         
         return members
     
-    def calculateTeamScore(self):
+    def calcTeamScore(self):
         points = 0
         for name in self.getTeamMembers():
-            p = Player(name)
-            points += p.calcPlayerScore()
+            p = Player(name, self.form)
+            points += p.points
         
         return points
-
-    # def calculateTeamTime(self):
-    #     time = Time(0,0,0)
-    #     for name in self.getTeamMembers():
-    #         p = Player(name)
-    #         time += p.calcPlayerTime()
+    
+    def calcTeamWins(self):
+        wins = 0
+        for name in self.getTeamMembers():
+            p = Player(name, self.form)
+            wins += p.wins
         
-    #     return time
+        return wins
+    
+    def calcTeamPodiums(self):
+        podiums = 0
+        for name in self.getTeamMembers():
+            p = Player(name, self.form)
+            podiums += p.podiums
         
-
+        return podiums
+    
+    def calcTeamSpoons(self):
+        spoons = 0
+        for name in self.getTeamMembers():
+            p = Player(name, self.form)
+            spoons += p.spoons
+        
+        return spoons
 
 
 

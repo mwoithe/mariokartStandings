@@ -17,6 +17,7 @@ class Init:
         "Puffy"
         # "freddy" #etc
     ]
+    numPlayers = len(playerList)
     
     teamList = [
         "red",

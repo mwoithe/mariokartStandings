@@ -6,16 +6,16 @@ class Standings:
     def __init__(self):
         pass
 
-    def displayTeamStandings(self):
+    def displayTeamStandings(self, form=-1):
         teams = []
         for name in Init.teamList:
-            teams.append(Team(name))
+            teams.append(Team(name, form))
         
         teams.sort(reverse=True)
-        message = "\tTeam\tPoints\n"
+        message = "\tTeam\tPoints\tWins\tPodiums\tSpoons\n"
         pos = 1
         for team in teams:
-            message += f"{pos}\t{team.name}\t{team.points}\n"
+            message += f"{pos}\t{team.name}\t{team.points}\t{team.wins}\t{team.podiums}\t{team.spoons}\n"
             pos += 1
         
         print(message)
@@ -24,17 +24,17 @@ class Standings:
         f.close()
 
 
-    def displayIndStandings(self):
+    def displayIndStandings(self, form=-1):
         # Store the player instances, because these can be compared easily 
         players = []
         for name in Init.playerList:
-            players.append(Player(name))
+            players.append(Player(name, form))
 
         players.sort(reverse=True)
-        message = "\tPlayer\tPoints\n"
+        message = "\tPlayer\tPoints\tWins\tPodiums\tSpoons\n"
         pos = 1
         for player in players:
-            message += f"{pos}\t{player.name}\t{player.points}\n"
+            message += f"{pos}\t{player.name}\t{player.points}\t{player.wins}\t{player.podiums}\t{player.spoons}\n"
             pos += 1
         
         print(message)
@@ -44,5 +44,5 @@ class Standings:
         
 
 s = Standings()
-s.displayIndStandings()
-s.displayTeamStandings()
+# s.displayIndStandings(3)
+s.displayTeamStandings(3)
