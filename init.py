@@ -25,8 +25,8 @@ class Init:
     ]
 
     def __init__(self):
-        # self.players = []
-        # self.teams = []
+        f = open("data/races/usedIDs.txt", "w")
+        f.close()
         pass
 
     def initPlayers(self, names):

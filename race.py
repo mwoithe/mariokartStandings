@@ -20,7 +20,7 @@ class Race:
         print("\n----------------------------------------\n",
               "Checking race data:")
         
-        f = open("data/resultInput.txt", "r")
+        f = open(Race.dataFile, "r")
         
         file = f.read()
         f.close()
@@ -38,7 +38,7 @@ class Race:
                 raise e.DataInputError(Race.dataFile, "More than one 'trackName' field was found")
         else:
             track = track[0][10:]
-
+        
         print("Track Name OK")
 
         # check for a raceID
@@ -50,6 +50,13 @@ class Race:
                 raise e.DataInputError(Race.dataFile, "More than one 'raceID' field was found")
         else:
             id = int(id[0][7:])
+            f = open("data/races/usedIDs.txt", "r")
+            nums = f.read()
+            f.close()
+            nums = nums.split("\n")
+            for num in nums:
+                if num == str(id):
+                    raise e.DataInputError(Race.dataFile, f"raceID '{num}' has already been used")
 
         print("Race ID OK")
 
@@ -106,9 +113,12 @@ class Race:
         track = re.findall("trackName=.+", info)
         self.track = track[0][10:]
 
-        # check for a raceID
+        # check for a raceID, log it so it can't be used again
         id = re.findall("raceID=[0-9]+", info)
         self.id = int(id[0][7:])
+        f = open("data/races/usedIDs.txt", "a")
+        f.write("\n" + str(self.id))
+        f.close()
 
         # Deal with the player placings
         raceData = t[1]
@@ -134,4 +144,4 @@ class Race:
 
 
 
-r = Race()
+# r = Race()
