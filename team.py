@@ -80,7 +80,7 @@ class Team:
     
     def calcTeamScore(self):
         points = 0
-        for name in self.getTeamMembers():
+        for name in self.members:
             p = Player(name, self.form)
             points += p.points
         
@@ -88,7 +88,7 @@ class Team:
     
     def calcTeamWins(self):
         wins = 0
-        for name in self.getTeamMembers():
+        for name in self.members:
             p = Player(name, self.form)
             wins += p.wins
         
@@ -96,7 +96,7 @@ class Team:
     
     def calcTeamPodiums(self):
         podiums = 0
-        for name in self.getTeamMembers():
+        for name in self.members:
             p = Player(name, self.form)
             podiums += p.podiums
         
@@ -104,7 +104,7 @@ class Team:
     
     def calcTeamSpoons(self):
         spoons = 0
-        for name in self.getTeamMembers():
+        for name in self.members:
             p = Player(name, self.form)
             spoons += p.spoons
         

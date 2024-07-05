@@ -5,6 +5,7 @@ class Player:
         self.name = name
         self.fileName = "data/players/"+name+".csv"
         self.form = form
+        self.data = self.getPlayerData()
         self.points = self.calcPlayerScore()
         self.wins = self.calcPlayerWins()
         self.podiums = self.calcPlayerPodiums()
@@ -66,7 +67,7 @@ class Player:
         f.close()
 
     def getPlayerData(self):
-        """Returns a list of all rows of player data."""
+        """Returns a list of all rows of player data: each row is its own list, with values as separated by commas in the file"""
         f = open(self.fileName, "r")
         lines = f.read().split("\n")
         f.close()
@@ -78,14 +79,14 @@ class Player:
         return data
     
     def calcPlayerScore(self):
-        data = self.getPlayerData()[(-self.form):]
+        data = self.data[(-self.form):]
         score = 0
         for row in data:
             score += int(row[4])
         return score
     
     def calcPlayerWins(self):
-        data = self.getPlayerData()[(-self.form):]
+        data = self.data[(-self.form):]
         wins = 0
         for row in data:
             if row[3] == "1":
@@ -93,7 +94,7 @@ class Player:
         return wins
     
     def calcPlayerPodiums(self):
-        data = self.getPlayerData()[(-self.form):]
+        data = self.data[(-self.form):]
         podiums = 0
         for row in data:
             if row[3] in ["1", "2", "3"]:
