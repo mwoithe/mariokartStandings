@@ -63,7 +63,7 @@ class Race:
         # Deal with the player times
         raceData = t[1]
         times = raceData.split("\n")
-
+        places = []
         entry = 1
         for time in times:
             test = time.split(",")
@@ -83,7 +83,11 @@ class Race:
                             raise ValueError
                     except ValueError:
                         raise e.DataInputError(Race.dataFile, f"Something's wrong with data entry #{entry}: '{test[1]}' is not a valid placing")
-                    # int(test[1])
+                    
+                    if place not in places:
+                        places.append(place)
+                    else:
+                        raise e.DataInputError(Race.dataFile, f"Something's wrong with data entry #{entry}: placing '{test[1]}' has been used more than once")
                     
                     print(f"Data entry #{entry} OK")
             
@@ -127,12 +131,15 @@ class Race:
         for place in placings:
             res.append(Result(place, self.track, self.id))
         
-        res.sort(reverse=True)
+        res.sort(reverse=False)
         f = open("data/races/" + str(self.id) + self.track + ".csv", "w")
+        g = open("data/standings.txt", "w")
         f.write("player,placing,points")
+        g.write(f"\t{self.track}\tRace #{str(self.id)}\n\tPlayer\tPoints\n")
 
         for result in res:
             f.write(f"\n{result.name},{result.placing},{result.points}")
+            g.write(f"{result.placing}\t{result.name}\t{result.points}\n")
             p = Player(result.name)
             p.logRaceResult(result)
         
@@ -144,4 +151,4 @@ class Race:
 
 
 
-# r = Race()
+r = Race()
