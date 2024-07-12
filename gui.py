@@ -1,4 +1,5 @@
 import tkinter as tk
+import time
 from standings import Standings
 from race import Race
 import exceptions as e
@@ -33,85 +34,120 @@ def showErrorMessage(message):
 
     warning.pack()
 
+def showTime(exTime):
+    v.set(f"Execution took {exTime*1000} ms")
 
 ### button press handlers
 
 # Players 
 def overallPlayer():
     try:
+        start = time.time()
         stand = Standings()
         stand.displayIndStandings()
+        end = time.time()
+        showTime(end-start)
     except e.DataError as failure:
         showErrorMessage(failure.message)
 
 def lastPlayer():
     try:
+        start = time.time()
         stand = Standings()
         stand.displayIndStandings(1)
+        end = time.time()
+        showTime(end-start)
     except e.DataError as failure:
         showErrorMessage(failure.message)
 
 def form5Player():
     try:
+        start = time.time()
         stand = Standings()
         stand.displayIndStandings(5)
+        end = time.time()
+        showTime(end-start)
     except e.DataError as failure:
         showErrorMessage(failure.message)
 
 def form10Player():
     try:
+        start = time.time()
         stand = Standings()
         stand.displayIndStandings(10)
+        end = time.time()
+        showTime(end-start)
     except e.DataError as failure:
         showErrorMessage(failure.message)
 
 def form20Player():
     try:
+        start = time.time()
         stand = Standings()
         stand.displayIndStandings(20)
+        end = time.time()
+        showTime(end-start)
     except e.DataError as failure:
         showErrorMessage(failure.message)
 
 # Team buttons
 def overallTeam():
     try:
+        start = time.time()
         stand = Standings()
         stand.displayTeamStandings()
+        end = time.time()
+        showTime(end-start)
     except e.DataError as failure:
         showErrorMessage(failure.message)
 
 def lastTeam():
     try:
+        start = time.time()
         stand = Standings()
         stand.displayTeamStandings(1)
+        end = time.time()
+        showTime(end-start)
     except e.DataError as failure:
         showErrorMessage(failure.message)
 
 def form5Team():
     try:
+        start = time.time()
         stand = Standings()
         stand.displayTeamStandings(5)
+        end = time.time()
+        showTime(end-start)
     except e.DataError as failure:
         showErrorMessage(failure.message)
 
 def form10Team():
     try:
+        start = time.time()
         stand = Standings()
         stand.displayTeamStandings(10)
+        end = time.time()
+        showTime(end-start)
     except e.DataError as failure:
         showErrorMessage(failure.message)
 
 def form20Team():
     try:
+        start = time.time()
         stand = Standings()
         stand.displayTeamStandings(20)
+        end = time.time()
+        showTime(end-start)
     except e.DataError as failure:
         showErrorMessage(failure.message)
 
 # Log
 def logData():
     try:
+        start = time.time()
         Race()
+        end = time.time()
+        showTime(end-start)
     except e.DataError as failure:
         showErrorMessage(failure.message)
     # r.readData()
@@ -120,6 +156,10 @@ def logData():
 
 
 window = tk.Tk()
+v = tk.StringVar()
+timeMessage = tk.Label(textvariable=v)
+timeMessage.pack()
+
 playerFrame = tk.Frame(padx=5, pady=5)
 teamFrame = tk.Frame(padx=5, pady=5)
 otherFrame = tk.Frame(padx=5, pady=5)
