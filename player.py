@@ -1,4 +1,5 @@
 from init import Init
+from exceptions import NoDataError
 
 class Player:
     def __init__(self, name, form=-1):
@@ -73,9 +74,15 @@ class Player:
         f.close()
         
         data = []
+        n = 0
         for line in lines:
             data.append(line.split(","))
-            
+            n+=1
+        
+        if len(data)-1 < self.form:
+            raise NoDataError(f"Number of races requested ({self.form}) exceeds available race data ({len(data)-1})")
+        elif len(data) == 1:
+            raise NoDataError(f"Player '{self.name}' has no race data availabe")
         return data
     
     def calcPlayerScore(self):
