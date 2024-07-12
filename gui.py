@@ -3,14 +3,25 @@ from standings import Standings
 from race import Race
 import exceptions as e
 
+def packButtons():
+    for i in [0,1,2]:
+        for btn in buttons[i]:
+            btn.pack()
+        frames[i].pack(side="left")
+
+def unpackButtons():
+    for i in [0,1,2]:
+        for btn in buttons[i]:
+            btn.pack_forget()
+        frames[i].pack_forget()
+
+
 def showErrorMessage(message):
     def command():
         warning.pack_forget()
-        for btn in buttonList:
-            btn.pack()
+        packButtons()
     
-    for btn in buttonList:
-            btn.pack_forget()
+    unpackButtons()
 
     warning = tk.Button(
         text=message,
@@ -22,7 +33,10 @@ def showErrorMessage(message):
 
     warning.pack()
 
+
 ### button press handlers
+
+# Players 
 def overallPlayer():
     try:
         stand = Standings()
@@ -30,11 +44,10 @@ def overallPlayer():
     except e.DataError as failure:
         showErrorMessage(failure.message)
 
-
-def overallTeam():
+def lastPlayer():
     try:
         stand = Standings()
-        stand.displayTeamStandings()
+        stand.displayIndStandings(1)
     except e.DataError as failure:
         showErrorMessage(failure.message)
 
@@ -45,6 +58,35 @@ def form5Player():
     except e.DataError as failure:
         showErrorMessage(failure.message)
 
+def form10Player():
+    try:
+        stand = Standings()
+        stand.displayIndStandings(10)
+    except e.DataError as failure:
+        showErrorMessage(failure.message)
+
+def form20Player():
+    try:
+        stand = Standings()
+        stand.displayIndStandings(20)
+    except e.DataError as failure:
+        showErrorMessage(failure.message)
+
+# Team buttons
+def overallTeam():
+    try:
+        stand = Standings()
+        stand.displayTeamStandings()
+    except e.DataError as failure:
+        showErrorMessage(failure.message)
+
+def lastTeam():
+    try:
+        stand = Standings()
+        stand.displayTeamStandings(1)
+    except e.DataError as failure:
+        showErrorMessage(failure.message)
+
 def form5Team():
     try:
         stand = Standings()
@@ -52,10 +94,21 @@ def form5Team():
     except e.DataError as failure:
         showErrorMessage(failure.message)
 
-# def checkData():
-#     r = Race()
-#     r.checkData()
+def form10Team():
+    try:
+        stand = Standings()
+        stand.displayTeamStandings(10)
+    except e.DataError as failure:
+        showErrorMessage(failure.message)
 
+def form20Team():
+    try:
+        stand = Standings()
+        stand.displayTeamStandings(20)
+    except e.DataError as failure:
+        showErrorMessage(failure.message)
+
+# Log
 def logData():
     try:
         Race()
@@ -67,52 +120,138 @@ def logData():
 
 
 window = tk.Tk()
-greeting = tk.Label(text="Good ebening")
-greeting.pack()
+playerFrame = tk.Frame(padx=5, pady=5)
+teamFrame = tk.Frame(padx=5, pady=5)
+otherFrame = tk.Frame(padx=5, pady=5)
+
+frames = [playerFrame, teamFrame, otherFrame]
 
 
-btn_op = tk.Button(
-    text="Overall Player Standings",
+pButtonList = []
+tButtonList = []
+lButtonList = []
+
+
+btn_lp = tk.Button(
+    master=playerFrame,
+    text="Last race Player",
     width=25,
     height=5,
-    bg="grey",
-    command=overallPlayer
+    bg="#d7aafa",
+    command=lastPlayer
 )
+pButtonList.append(btn_lp)
 
-btn_ot = tk.Button(
-    text="Overall Team Standings",
-    width=25,
-    height=5,
-    bg="grey",
-    command=overallTeam
-)
 
-btn_fp = tk.Button(
+btn_5p = tk.Button(
+    master=playerFrame,
     text="Last 5 Player Standings",
     width=25,
     height=5,
-    bg="grey",
+    bg="#c27cf7",
     command=form5Player
 )
+pButtonList.append(btn_5p)
 
-btn_ft = tk.Button(
+btn_10p = tk.Button(
+    master=playerFrame,
+    text="Last 10 Player Standings",
+    width=25,
+    height=5,
+    bg="#a943f7",
+    command=form10Player
+)
+pButtonList.append(btn_10p)
+
+btn_20p = tk.Button(
+    master=playerFrame,
+    text="Last 20 Player Standings",
+    width=25,
+    height=5,
+    bg="#8f02fa",
+    command=form20Player
+)
+pButtonList.append(btn_20p)
+
+btn_op = tk.Button(
+    master=playerFrame,
+    text="Overall Player Standings",
+    width=25,
+    height=5,
+    bg="#6902b8",
+    command=overallPlayer
+)
+pButtonList.append(btn_op)
+
+
+btn_lt = tk.Button(
+    master=teamFrame,
+    text="Last race Team",
+    width=25,
+    height=5,
+    bg="#c8fbfb",
+    command=lastTeam
+)
+tButtonList.append(btn_lt)
+
+btn_5t = tk.Button(
+    master=teamFrame,
     text="Last 5 Team Standings",
     width=25,
     height=5,
-    bg="grey",
+    bg="#96fbfb",
     command=form5Team
 )
+tButtonList.append(btn_5t)
 
-btn_ld = tk.Button(
+btn_10t = tk.Button(
+    master=teamFrame,
+    text="Last 10 Team Standings",
+    width=25,
+    height=5,
+    bg="#48fbfb",
+    command=form10Team
+)
+tButtonList.append(btn_10t)
+
+btn_20t = tk.Button(
+    master=teamFrame,
+    text="Last 20 Team Standings",
+    width=25,
+    height=5,
+    bg="#00fbfb",
+    command=form20Team
+)
+tButtonList.append(btn_20t)
+
+btn_ot = tk.Button(
+    master=teamFrame,
+    text="Overall Team Standings",
+    width=25,
+    height=5,
+    bg="#00c8c8",
+    command=overallTeam
+)
+tButtonList.append(btn_ot)
+
+btn_log = tk.Button(
+    master=otherFrame,
     text="Log race data",
     width=25,
     height=5,
-    bg="yellow",
+    bg="#70fa8c",
     command=logData
 )
+lButtonList.append(btn_log)
+buttons = [pButtonList, tButtonList, lButtonList]
 
-buttonList = [btn_op, btn_ot, btn_fp, btn_ft, btn_ld]
-for btn in buttonList:
-    btn.pack()
 
+
+    
+
+
+# playerFrame.pack()
+# teamFrame.pack(side="left")
+# otherFrame.pack(side="left")
+packButtons()
 window.mainloop()
