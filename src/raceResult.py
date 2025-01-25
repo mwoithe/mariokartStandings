@@ -1,14 +1,16 @@
-from init import Init
+from player import Player 
 import exceptions as e
 
 class Result:
-    pointsAllocation = [None,15,12,10,9,8,7,6,5,4,3,2,1]
+    # pointsAllocation = [None,15,12,10,9,8,7,6,5,4,3,2,1]
+    # pointsAllocation = [None,42,36,31,27,23,20,17,14,12,10,8,6,5,4,3,2,1,0]
+    pointsAllocation = [None,21,17,14,11,9,7,5,4,3,2,1,0]
     def __init__(self, string, trackName, raceID):
         data = string.split(",")
         if len(data) != 2:
             raise e.DataReadError("Whoever did the checks should be sacked. This should not have got to here")
         
-        if data[0] in Init.playerList:
+        if data[0] in Player.playerList:
             self.name = data[0]
         else:
             raise e.DataReadError("Whoever did the checks should be sacked. This should not have got to here")

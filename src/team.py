@@ -1,6 +1,13 @@
 from player import Player
 
 class Team:
+    teamList = [
+        "Milk",
+        "Maximus",
+        "Nut Bars",
+        "Naver"
+    ]
+    
     def __init__(self, teamName, form=-1):
         self.name = teamName
         self.fileName = "data/teams/"+teamName+".txt"

@@ -1,13 +1,28 @@
-from init import Init
 from exceptions import NoDataError
 
 class Player:
+    playerList = [
+        "slack",
+        "TheStar23",
+        "BIGKINGA",
+        "Schiller",
+        "kingy",
+        "Theta",
+        "Jacob",
+        "michaela",
+        "Old Man Gi",
+        "Caleb",
+        "Tim",
+        "Ashley"
+    ]
+    numPlayers = len(playerList)
+
     def __init__(self, name, form=-1):
         self.name = name
         self.fileName = "data/players/"+name+".csv"
         self.form = form
         self.data = self.getPlayerData()
-        self.points = self.calcPlayerScore()
+        self.points = self.calcPlayerScoreAlt()
         self.wins = self.calcPlayerWins()
         self.podiums = self.calcPlayerPodiums()
         self.spoons = self.calcPlayerSpoons()
@@ -79,10 +94,10 @@ class Player:
             data.append(line.split(","))
             n+=1
         
-        if len(data)-1 < self.form:
-            raise NoDataError(f"Number of races requested ({self.form}) exceeds available race data ({len(data)-1})")
-        elif len(data) == 1:
-            raise NoDataError(f"Player '{self.name}' has no race data availabe")
+        # if len(data)-1 < self.form:
+        #     raise NoDataError(f"Number of races requested ({self.form}) exceeds available race data ({len(data)-1})")
+        # elif len(data) == 1:
+        #     raise NoDataError(f"Player '{self.name}' has no race data availabe")
         return data
     
     def calcPlayerScore(self):
@@ -112,6 +127,14 @@ class Player:
         data = self.getPlayerData()[(-self.form):]
         spoons = 0
         for row in data:
-            if row[3] == str(Init.numPlayers):
+            if row[3] == str(Player.numPlayers):
                 spoons += 1
         return spoons
+    
+    def calcPlayerScoreAlt(self):
+        pointsAllocation = [None,21,17,14,11,9,7,5,4,3,2,1,0]
+        data = self.data[(-self.form):]
+        score = 0
+        for row in data:
+            score += pointsAllocation[int(row[3])]
+        return score

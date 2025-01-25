@@ -1,6 +1,6 @@
 from team import Team
 from player import Player
-from init import Init
+# import time
 
 class Standings:
     def __init__(self):
@@ -8,7 +8,7 @@ class Standings:
 
     def displayTeamStandings(self, form=-1):
         teams = []
-        for name in Init.teamList:
+        for name in Team.teamList:
             teams.append(Team(name, form))
         
         teams.sort(reverse=True)
@@ -27,7 +27,7 @@ class Standings:
     def displayIndStandings(self, form=-1):
         # Store the player instances, because these can be compared easily 
         players = []
-        for name in Init.playerList:
+        for name in Player.playerList:
             players.append(Player(name, form))
 
         players.sort(reverse=True)
@@ -42,7 +42,6 @@ class Standings:
         f.write(message)
         f.close()
         
-
-s = Standings()
-# s.displayIndStandings(3)
-s.displayTeamStandings(3)
+s=Standings()
+# s.displayIndStandings()
+s.displayTeamStandings()

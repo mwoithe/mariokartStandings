@@ -1,5 +1,4 @@
 from player import Player
-from init import Init
 from raceResult import Result
 import re
 import exceptions as e
@@ -74,12 +73,12 @@ class Race:
                 if test[0] == "" or test[1] == "":
                     raise e.DataInputError(Race.dataFile, f"Something's wrong with data entry #{entry}: At least one entry is empty")
                 else:
-                    if test[0] not in Init.playerList:
+                    if test[0] not in Player.playerList:
                         raise e.DataInputError(Race.dataFile, f"Something's wrong with data entry #{entry}: {test[0]} is not a listed player")
                     
                     try:
                         place = int(test[1])
-                        if not 1 <= place <= len(Init.playerList):
+                        if not 1 <= place <= len(Player.playerList):
                             raise ValueError
                     except ValueError:
                         raise e.DataInputError(Race.dataFile, f"Something's wrong with data entry #{entry}: '{test[1]}' is not a valid placing")
@@ -147,8 +146,4 @@ class Race:
 
         return True
 
-        
 
-
-
-r = Race()
