@@ -4,7 +4,7 @@ import re
 import exceptions as e
 
 class Race:
-    dataFile = "data/resultInput.txt"
+    dataFile = "mariokartStandings/data/resultInput.txt"
 
     def __init__(self):
         if self.checkData():
@@ -49,7 +49,7 @@ class Race:
                 raise e.DataInputError(Race.dataFile, "More than one 'raceID' field was found")
         else:
             id = int(id[0][7:])
-            f = open("data/races/usedIDs.txt", "r")
+            f = open("mariokartStandings/data/races/usedIDs.txt", "r")
             nums = f.read()
             f.close()
             nums = nums.split("\n")
@@ -119,7 +119,7 @@ class Race:
         # check for a raceID, log it so it can't be used again
         id = re.findall("raceID=[0-9]+", info)
         self.id = int(id[0][7:])
-        f = open("data/races/usedIDs.txt", "a")
+        f = open("mariokartStandings/data/races/usedIDs.txt", "a")
         f.write("\n" + str(self.id))
         f.close()
 
@@ -131,8 +131,8 @@ class Race:
             res.append(Result(place, self.track, self.id))
         
         res.sort(reverse=False)
-        f = open("data/races/" + str(self.id) + self.track + ".csv", "w")
-        g = open("data/standings.txt", "w")
+        f = open("mariokartStandings/data/races/" + str(self.id) + self.track + ".csv", "w")
+        g = open("mariokartStandings/data/standings.txt", "w")
         f.write("player,placing,points")
         g.write(f"\t{self.track}\tRace #{str(self.id)}\n\tPlayer\tPoints\n")
 

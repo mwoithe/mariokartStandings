@@ -31,6 +31,7 @@ def showErrorMessage(message):
         bg="red",
         command=command
     )
+    print(message)
 
     warning.pack()
 

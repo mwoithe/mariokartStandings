@@ -1,0 +1,114 @@
+.team-row {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0.5vh 1vw;
+    border-radius: 1vw;
+    justify-content: center;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 1;
+    height: 19.4vh;
+    font-size: 6.596vh;
+    padding: 6.402vh;
+}
+
+.player-row {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0.5vh 1vw;
+    border-radius: 1vw;
+    justify-content: center;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 1;
+    height: 7.090000000000001vh;
+    font-size: 4.2540000000000004vh;
+    padding: 1.4180000000000001vh;
+}
+
+
+.player-header {
+    font-style: italic;
+}
+
+.team-header {
+    font-style: italic;
+}
+
+body {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+article {
+    width: 93%;
+}
+
+.side-bar {
+    width: 7%;
+    writing-mode:vertical-rl;
+    text-align: center;
+    vertical-align: middle;
+    
+    line-height: 1;
+    padding: 1.4vw;
+    font-size: 4.2vw;
+}
+
+/*colours*/
+.blue {
+    background-color: #9fb9d5;
+    color: #1907B4;
+}
+
+.green {
+    background-color: #ccffcc;
+    color: #006600;
+}
+
+.grey {
+    background-color: #c5c5c5;
+    color: #404040;
+}
+
+.lime {
+    background-color: #CEF984;
+    color: #668C00;
+}
+
+.orange {
+    background-color: #FACB8F;
+    color: #A64C00 ;
+}
+
+.pink {
+    background-color: #FFCEFE;
+    color: #C9009C;
+}
+
+.purple {
+    background-color: #AC9FC6;
+    color: #340467;
+}
+
+.red {
+    background-color: #FFBBBB;
+    color: #A90000;
+}
+
+.sky {
+    background-color: #A4F2FF;
+    color: #006FDD;
+}
+
+.yellow {
+    background-color: #FFFF9A;
+    color: #996600;
+}
+
+
+/* . {
+    background-color: #;
+    color: #;
+} */
+        

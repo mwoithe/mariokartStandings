@@ -1,4 +1,6 @@
 from exceptions import NoDataError
+import team
+from display import Display
 
 class Player:
     playerList = [
@@ -18,14 +20,19 @@ class Player:
     numPlayers = len(playerList)
 
     def __init__(self, name, form=-1):
+        print("Initiating player", name)
+        Display.set_num_players(len(Player.playerList))
         self.name = name
-        self.fileName = "data/players/"+name+".csv"
+        self.fileName = "mariokartStandings/data/players/"+name+".csv"
         self.form = form
+        self.colour = team.Team.getPlayerColour(name)
         self.data = self.getPlayerData()
-        self.points = self.calcPlayerScoreAlt()
+        self.points = self.calcPlayerScore()
         self.wins = self.calcPlayerWins()
         self.podiums = self.calcPlayerPodiums()
         self.spoons = self.calcPlayerSpoons()
+
+        # print(name, "colour = ", self.colour)
     
     def __lt__(self, other):
         if self.points < other.points:
@@ -138,3 +145,25 @@ class Player:
         for row in data:
             score += pointsAllocation[int(row[3])]
         return score
+
+    def getPlayerBar(self, pos):
+        return f"""<div class="player-row {self.colour}">
+            <div class="col-1 row-col">
+                {pos}
+            </div>
+            <div class="col-3 row-col">
+                {self.name}
+            </div>
+            <div class="col-2 row-col">
+                {self.points}
+            </div>
+            <div class="col-2 row-col">
+                {self.wins}
+            </div>
+            <div class="col-2 row-col">
+                {self.podiums}
+            </div>
+            <div class="col-2 row-col">
+                {self.spoons}
+            </div>
+        </div>"""

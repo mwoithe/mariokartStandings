@@ -11,13 +11,26 @@ What were doing here is:
 """
 class Init:
     def __init__(self):
-        f = open("data/races/usedIDs.txt", "w")
+        try:
+            checkFile = open("mariokartStandings/data/init.txt", "r")
+            print("Warning: Initiation has already been completed, doing so again will reset the whole thing. Procede with EXTREME CATUTION")
+            checkFile.close()
+            return
+        except FileNotFoundError as e:
+            print("Starting init")
+
+        # set up check file so this doesn't get done again
+        f = open("mariokartStandings/data/init.txt", "w")
+        f.write("Foobar")
         f.close()
-        # self.initPlayers()
-        # self.initTeams()
+
+        f = open("mariokartStandings/data/races/usedIDs.txt", "w")
+        f.close()
+        self.initPlayers()
+        self.initTeams()
 
         # reset other files
-        f = open("data/resultInput.txt", "w")
+        f = open("mariokartStandings/data/resultInput.txt", "w")
         f.write("# DO NOT REMOVE FIRST 4 LINES\ntrackName=\nraceID=1\nplayer,placing\n")
         f.close()
 
@@ -27,13 +40,13 @@ class Init:
 
         for playerName in Player.playerList:
             # create new file
-            f = open("data/players/"+playerName+".csv", "w")
+            f = open("mariokartStandings/data/players/"+playerName+".csv", "w")
             f.write(opening)
             f.close()
 
     def initTeams(self):
         for teamName in Team.teamList:
             # create new file
-            f = open("data/teams/"+teamName+".txt", "w")
+            f = open("mariokartStandings/data/teams/"+teamName+".txt", "w")
             f.write("name="+teamName+"\n")
             f.close()
