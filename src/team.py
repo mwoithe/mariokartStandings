@@ -14,28 +14,45 @@ class Team:
     teams = []
 
     def __init__(self, teamName, form=-1, colour=""):
+        Display.set_num_teams(len(Team.teamList))
+
         if teamName not in Team.teamList:
             print(f"WARNING: `{teamName}` is not a registered team.")
             return
+        
+        for team in Team.teams:
+            if team.name == teamName:
+                print(f"team {teamName} already exists")
+                team.refresh(colour=colour)
+                return
 
-        Display.set_num_teams(len(Team.teamList))
         self.name = teamName
-        self.fileName = "mariokartStandings/data/teams/"+teamName+".txt"
-
-        if colour != "":
-            self.changeTeamColour(colour)
+        self.fileName = f"mariokartStandings/data/teams/{teamName}.txt"
 
         self.form = form
-        self.members = self.getTeamMembers()
         self.colour = self.getTeamColour()
+        self.members = self.getTeamMembers()
+
         self.points = self.calcTeamScore()
         self.wins = self.calcTeamWins()
         self.podiums = self.calcTeamPodiums()
         self.spoons = self.calcTeamSpoons()
 
         Team.teams.append(self)
-        print(f"{teamName} = {self.colour}")
+        # print(f"{teamName} = {self.colour}")
+        print(f"Registered team {teamName}. Number of registered teams = {len(Team.teams)}")
         
+    def refresh(self, colour=""):
+        if colour != "":
+            self.changeTeamColour(colour)
+        
+        self.colour = self.getTeamColour()
+        self.members = self.getTeamMembers()
+        
+        self.points = self.calcTeamScore()
+        self.wins = self.calcTeamWins()
+        self.podiums = self.calcTeamPodiums()
+        self.spoons = self.calcTeamSpoons()
     
     def __lt__(self, other):
         if self.points < other.points:
@@ -90,7 +107,7 @@ class Team:
     
     def getTeamMembers(self):
         """
-        Extracts the team's members from the team data file, and returns them as a String array
+        Extracts the team's members from the team data file, and returns them as a Player array
         """
         f = open(self.fileName, "r")
         data = f.read().split("\n")
@@ -99,7 +116,9 @@ class Team:
         members = []
         for line in data:
             if line[0:7] == "member=":
-                members.append(line[7:])
+                name = line[7:]
+                player = p.Player.getPlayerByName(name)
+                members.append(player)
         
         return members
     
@@ -162,33 +181,29 @@ class Team:
     
     def calcTeamScore(self):
         points = 0
-        for name in self.members:
-            player = p.Player(name, self.form)
-            points += player.points
+        for person in self.members:
+            points += person.points
         
         return points
     
     def calcTeamWins(self):
         wins = 0
-        for name in self.members:
-            player = p.Player(name, self.form)
-            wins += player.wins
+        for person in self.members:
+            wins += person.wins
         
         return wins
     
     def calcTeamPodiums(self):
         podiums = 0
-        for name in self.members:
-            player = p.Player(name, self.form)
-            podiums += player.podiums
+        for person in self.members:
+            podiums += person.podiums
         
         return podiums
     
     def calcTeamSpoons(self):
         spoons = 0
-        for name in self.members:
-            player = p.Player(name, self.form)
-            spoons += player.spoons
+        for person in self.members:
+            spoons += person.spoons
         
         return spoons
     
@@ -215,8 +230,15 @@ class Team:
         </div>"""
     
     @classmethod
-    def getPlayerColour(cls, player):
+    def getPlayerColour(cls, player_name):
         for team in Team.teams:
-            for name in team.members:
-                if name == player:
+            for player in team.members:
+                if player.name == player_name:
                     return team.colour
+
+    @classmethod
+    def getTeamByName(cls, name):
+        for team in cls.teams:
+            if team.name == name:
+                return team
+        return None

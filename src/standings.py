@@ -12,9 +12,13 @@ class Standings:
 """
 
     def displayTeamStandings(self, form=-1):
-        teams = []
-        for name in t.Team.teamList:
-            teams.append(t.Team(name, form))
+        teams = t.Team.teams
+
+        for player in p.Player.players:
+            player.refresh(form)
+
+        for team in teams:
+            team.refresh()
         
         teams.sort(reverse=True)
         message = "\tTeam\tPoints\tWins\tPodiums\tSpoons\n"
@@ -43,16 +47,10 @@ class Standings:
         f.close()
 
     def displayIndStandings(self, form=-1):
-        # Yeah, I know this is scuffed but otherwise I can't get the colours
-        teams = []
-        for name in t.Team.teamList:
-            teams.append(t.Team(name, form))
+        players = p.Player.players
 
-
-        # Store the player instances, because these can be compared easily 
-        players = []
-        for name in p.Player.playerList:
-            players.append(p.Player(name, form))
+        for player in players:
+            player.refresh(form)
 
         players.sort(reverse=True)
         message = "\tPlayer\tPoints\tWins\tPodiums\tSpoons\n"
@@ -135,6 +133,6 @@ class Standings:
 
     # def write_html(self, )
         
-s=Standings()
-s.displayIndStandings()
-s.displayTeamStandings()
+# s=Standings()
+# s.displayIndStandings()
+# s.displayTeamStandings()

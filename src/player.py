@@ -10,12 +10,23 @@ def get_players():
 
 class Player:
     playerList = get_players()
-    numPlayers = len(playerList)
+    players = []
 
     def __init__(self, name, form=-1):
         Display.set_num_players(len(Player.playerList))
+
+        if name not in Player.playerList:
+            print(f"WARNING: `{name}` is not a registered player.")
+            return
+        
+        for player in Player.players:
+            if player.name == name:
+                print(f"Player `{name}` already exists")
+                player.refresh(form)
+                return
+
         self.name = name
-        self.fileName = "mariokartStandings/data/players/"+name+".csv"
+        self.fileName = f"mariokartStandings/data/players/{name}.csv"
         self.form = form
         self.colour = team.Team.getPlayerColour(name)
         self.data = self.getPlayerData()
@@ -24,7 +35,21 @@ class Player:
         self.podiums = self.calcPlayerPodiums()
         self.spoons = self.calcPlayerSpoons()
 
-        print(name, "colour = ", self.colour)
+        Player.players.append(self)
+
+        # print(name, "colour = ", self.colour)
+        print(f"Registered player {name}. Number of registered players = {len(Player.players)}")
+
+    def refresh(self, form):
+        print(f"Refreshing `{self.name}`")
+        self.form = form
+        self.colour = team.Team.getPlayerColour(self.name)
+        self.data = self.getPlayerData()
+        self.points = self.calcPlayerScore()
+        print(f"self.points = {self.points}")
+        self.wins = self.calcPlayerWins()
+        self.podiums = self.calcPlayerPodiums()
+        self.spoons = self.calcPlayerSpoons()
     
     def __lt__(self, other):
         if self.points < other.points:
@@ -126,7 +151,7 @@ class Player:
         data = self.getPlayerData()[(-self.form):]
         spoons = 0
         for row in data:
-            if row[3] == str(Player.numPlayers):
+            if row[3] == str(len(Player.players)):
                 spoons += 1
         return spoons
     
@@ -159,3 +184,11 @@ class Player:
                 {self.spoons}
             </div>
         </div>"""
+    
+    @classmethod
+    def getPlayerByName(cls, name):
+        for player in cls.players:
+            if player.name == name:
+                return player
+        
+        return None

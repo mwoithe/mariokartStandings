@@ -13,8 +13,10 @@ class Init:
     def __init__(self):
         try:
             checkFile = open("mariokartStandings/init/init.txt", "r")
-            print("Warning: Initiation has already been completed, doing so again will reset the whole thing. Procede with EXTREME CATUTION")
+            print("Warning: Initialisation has already been completed, doing so again will reset the whole thing. Procede with EXTREME CATUTION")
             checkFile.close()
+            print("Reloading...")
+            self.reload()
             return
         except FileNotFoundError as e:
             print("Starting init")
@@ -44,9 +46,21 @@ class Init:
             f.write(opening)
             f.close()
 
+            # create new player
+
     def initTeams(self):
         for teamName in Team.teamList:
             # create new file
             f = open("mariokartStandings/data/teams/"+teamName+".txt", "w")
             f.write("name="+teamName+"\n")
             f.close()
+
+    def reload(self):
+        """This one is for when the program is reopened, but initilisation is not to be done again"""
+        for playerName in Player.playerList:
+            if Player.getPlayerByName(playerName) == None:
+                Player(playerName)
+        
+        for teamName in Team.teamList:
+            if Team.getTeamByName(teamName) == None:
+                Team(teamName)
