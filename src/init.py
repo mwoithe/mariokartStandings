@@ -12,7 +12,7 @@ What were doing here is:
 class Init:
     def __init__(self):
         try:
-            checkFile = open("mariokartStandings/data/init.txt", "r")
+            checkFile = open("mariokartStandings/init/init.txt", "r")
             print("Warning: Initiation has already been completed, doing so again will reset the whole thing. Procede with EXTREME CATUTION")
             checkFile.close()
             return

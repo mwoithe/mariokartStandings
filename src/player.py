@@ -2,25 +2,17 @@ from exceptions import NoDataError
 import team
 from display import Display
 
+def get_players():
+    f = open("mariokartStandings/init/players.txt", "r")
+    names = f.read().split("\n")
+    f.close()
+    return names
+
 class Player:
-    playerList = [
-        "slack",
-        "TheStar23",
-        "BIGKINGA",
-        "Schiller",
-        "kingy",
-        "Theta",
-        "Jacob",
-        "michaela",
-        "Old Man Gi",
-        "Caleb",
-        "Tim",
-        "Ashley"
-    ]
+    playerList = get_players()
     numPlayers = len(playerList)
 
     def __init__(self, name, form=-1):
-        print("Initiating player", name)
         Display.set_num_players(len(Player.playerList))
         self.name = name
         self.fileName = "mariokartStandings/data/players/"+name+".csv"
@@ -32,7 +24,7 @@ class Player:
         self.podiums = self.calcPlayerPodiums()
         self.spoons = self.calcPlayerSpoons()
 
-        # print(name, "colour = ", self.colour)
+        print(name, "colour = ", self.colour)
     
     def __lt__(self, other):
         if self.points < other.points:

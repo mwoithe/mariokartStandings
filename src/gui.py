@@ -1,5 +1,6 @@
 import tkinter as tk
 import time
+import team
 from standings import Standings
 from race import Race
 import exceptions as e
@@ -39,6 +40,19 @@ def showTime(exTime):
     v.set(f"Execution took {exTime*1000} ms")
 
 ### button press handlers
+form_list = [-1,1,5,10,20]
+def refreshDisplay():
+    try:
+        start = time.time()
+        stand = Standings()
+        for num in form_list:
+            stand.displayTeamStandings(num)
+            stand.displayIndStandings(num)
+        end = time.time()
+        showTime(end-start)
+    except e.DataError as failure:
+        showErrorMessage(failure.message)
+
 
 # Players 
 def overallPlayer():
@@ -152,6 +166,15 @@ def logData():
     except e.DataError as failure:
         showErrorMessage(failure.message)
     # r.readData()
+
+def changeTeamColour():
+    teamName = input("Which teams colour would you like to change? ")
+    if teamName not in team.Team.teamList:
+        print(f"WARNING: `{teamName}` is not a registered team.")
+        return
+    
+    colour = input(f"What should {teamName}'s new colour be? ")
+    team.Team(teamName, colour=colour.lower())
 
 ####
 
@@ -284,6 +307,26 @@ btn_log = tk.Button(
     command=logData
 )
 lButtonList.append(btn_log)
+
+btn_ctc = tk.Button(
+    master=otherFrame,
+    text="Change team colour",
+    width=25,
+    height=5,
+    bg="#70fa8c",
+    command=changeTeamColour
+)
+lButtonList.append(btn_ctc)
+
+btn_refresh = tk.Button(
+    master=otherFrame,
+    text="Refresh display",
+    width=25,
+    height=5,
+    bg="#70fa8c",
+    command=refreshDisplay
+)
+lButtonList.append(btn_refresh)
 buttons = [pButtonList, tButtonList, lButtonList]
 
 

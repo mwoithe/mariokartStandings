@@ -2,20 +2,29 @@
 import player as p
 from display import Display
 
+def get_teams():
+    f = open("mariokartStandings/init/teams.txt", "r")
+    names = f.read().split("\n")
+    f.close()
+    return names
+
 class Team:
-    teamList = [
-        "Milk",
-        "Maximus",
-        "Nut Bars",
-        "Naver"
-    ]
+    teamList = get_teams()
 
     teams = []
 
-    def __init__(self, teamName, form=-1):
+    def __init__(self, teamName, form=-1, colour=""):
+        if teamName not in Team.teamList:
+            print(f"WARNING: `{teamName}` is not a registered team.")
+            return
+
         Display.set_num_teams(len(Team.teamList))
         self.name = teamName
         self.fileName = "mariokartStandings/data/teams/"+teamName+".txt"
+
+        if colour != "":
+            self.changeTeamColour(colour)
+
         self.form = form
         self.members = self.getTeamMembers()
         self.colour = self.getTeamColour()
@@ -25,7 +34,7 @@ class Team:
         self.spoons = self.calcTeamSpoons()
 
         Team.teams.append(self)
-        print("List of teams:", Team.teams)
+        print(f"{teamName} = {self.colour}")
         
     
     def __lt__(self, other):
@@ -108,8 +117,48 @@ class Team:
                 colour = line[7:]
                 break
 
-        print(colour)
+        # print(colour)
         return colour
+    
+    def changeTeamColour(self, new_colour):
+        colour_list = [
+            "blue",
+            "green",
+            "grey",
+            "lime",
+            "orange",
+            "pink",
+            "purple",
+            "red",
+            "sky",
+            "yellow"
+        ]
+
+        if new_colour not in colour_list:
+            print("Colour was not changed - colour not valid")
+            return
+
+        f = open(self.fileName, "r")
+        data = f.read().split("\n")
+        f.close()
+
+        f = open(self.fileName, "w")
+        success = False
+
+        for line in data:
+            if line[0:7] == "colour=":
+                f.write("colour=" + new_colour + "\n")
+                success = True
+            else:
+                f.write(line + "\n")
+        
+        if not success:
+            f.write("colour=" + new_colour + "\n")
+            success = True
+
+        f.close()
+        print(f"{self.name}'s colour successfully changed to {new_colour}")
+        return
     
     def calcTeamScore(self):
         points = 0
