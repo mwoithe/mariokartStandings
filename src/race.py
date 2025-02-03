@@ -132,14 +132,11 @@ class Race:
         
         res.sort(reverse=False)
         f = open("mariokartStandings/data/races/" + str(self.id) + self.track + ".csv", "w")
-        g = open("mariokartStandings/data/standings.txt", "w")
         f.write("player,placing,points")
-        g.write(f"\t{self.track}\tRace #{str(self.id)}\n\tPlayer\tPoints\n")
 
         for result in res:
             f.write(f"\n{result.name},{result.placing},{result.points}")
-            g.write(f"{result.placing}\t{result.name}\t{result.points}\n")
-            p = Player(result.name)
+            p = Player.getPlayerByName(result.name)
             p.logRaceResult(result)
         
         f.close()

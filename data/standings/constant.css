@@ -8,10 +8,16 @@
 
 .player-header {
     font-style: italic;
+    border-color: #000000;
+    border-width: 0.25vh;
+    border-style: solid;
 }
 
 .team-header {
     font-style: italic;
+    border-color: #000000;
+    border-width: 0.25vh;
+    border-style: solid;
 }
 
 body {

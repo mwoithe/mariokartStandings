@@ -97,7 +97,11 @@ class Team:
             return False
         
     def __eq__(self, other):
-        return (self.points == other.points and
+        print(type(other))
+        if type(other) != type(self) or other is None:
+            return False
+        else:
+            return (self.points == other.points and
                 self.wins == other.wins and
                 self.podiums == other.podiums and
                 self.spoons == other.spoons)
@@ -242,3 +246,58 @@ class Team:
             if team.name == name:
                 return team
         return None
+    
+    def addPlayer(self, player_name):
+        if player_name not in p.Player.playerList:
+            print(f"Player not assigned - `{player_name}` not a valid player")
+            return
+        
+        # Check if player is in another team
+        found_in = None
+        for team in Team.teams:
+            for player in team.members:
+                if player.name == player_name and team.name == self.name:
+                    print(f"Player `{player_name}` is already in team `{self.name}`")
+                    return
+                elif player.name == player_name:
+                    found_in = team
+                    if input(f"Player `{player_name}` is already in team `{team.name}`. \nDo you wish to remove them from {team.name} and add to `{self.name}`? \nType 'yes' to proceed\n") != "yes":
+                        return
+                    # break
+
+        # Remove from current team
+        if found_in != None:
+            found_in.removePlayer(player_name)
+
+        # add to this one
+        f = open(self.fileName, "a")
+        f.write(f"member={player_name}\n")
+        f.close()
+
+
+        print(f"`{player_name}` successfully added to `{self.name}`")
+        self.members = self.getTeamMembers()
+        return
+
+    def removePlayer(self, player_name):
+        if p.Player.getPlayerByName(player_name) not in self.members:
+            print(f"Couldn't remove player `{player_name}` from team `{self.name}` - `{player_name}` is not in team `{self.name}`")
+            return
+        
+        f = open(self.fileName, "r")
+        data = f.read().split("\n")
+        f.close()
+
+        f = open(self.fileName, "w")
+        success = False
+
+        for line in data:
+            if line[0:7] == "member=" and line[7:] == player_name:
+                success = True
+            else:
+                f.write(line + "\n")
+
+        f.close()
+        print(f"`{player_name}` successfully removed from `{self.name}`")
+        self.members = self.getTeamMembers()
+        return

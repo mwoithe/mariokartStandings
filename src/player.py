@@ -41,12 +41,12 @@ class Player:
         print(f"Registered player {name}. Number of registered players = {len(Player.players)}")
 
     def refresh(self, form):
-        print(f"Refreshing `{self.name}`")
+        # print(f"Refreshing `{self.name}`")
         self.form = form
         self.colour = team.Team.getPlayerColour(self.name)
         self.data = self.getPlayerData()
         self.points = self.calcPlayerScore()
-        print(f"self.points = {self.points}")
+        # print(f"self.points = {self.points}")
         self.wins = self.calcPlayerWins()
         self.podiums = self.calcPlayerPodiums()
         self.spoons = self.calcPlayerSpoons()
@@ -118,11 +118,15 @@ class Player:
             data.append(line.split(","))
             n+=1
         
-        # if len(data)-1 < self.form:
-        #     raise NoDataError(f"Number of races requested ({self.form}) exceeds available race data ({len(data)-1})")
-        # elif len(data) == 1:
-        #     raise NoDataError(f"Player '{self.name}' has no race data availabe")
-        return data
+        try:
+            if len(data)-1 < self.form:
+                raise NoDataError(f"Number of races requested ({self.form}) exceeds available race data ({len(data)-1})")
+            elif len(data) == 1:
+                raise NoDataError(f"Player '{self.name}' has no race data availabe")
+            return data
+        except NoDataError as e:
+            print(e.message)
+            return []
     
     def calcPlayerScore(self):
         data = self.data[(-self.form):]

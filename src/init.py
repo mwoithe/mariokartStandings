@@ -22,7 +22,7 @@ class Init:
             print("Starting init")
 
         # set up check file so this doesn't get done again
-        f = open("mariokartStandings/data/init.txt", "w")
+        f = open("mariokartStandings/init/init.txt", "w")
         f.write("Foobar")
         f.close()
 
@@ -34,6 +34,8 @@ class Init:
         # reset other files
         f = open("mariokartStandings/data/resultInput.txt", "w")
         f.write("# DO NOT REMOVE FIRST 4 LINES\ntrackName=\nraceID=1\nplayer,placing\n")
+        for name in Player.playerList:
+            f.write(f"{name},\n")
         f.close()
 
 
@@ -47,6 +49,8 @@ class Init:
             f.close()
 
             # create new player
+            Player(playerName)
+
 
     def initTeams(self):
         for teamName in Team.teamList:
@@ -54,6 +58,9 @@ class Init:
             f = open("mariokartStandings/data/teams/"+teamName+".txt", "w")
             f.write("name="+teamName+"\n")
             f.close()
+
+            # create new team
+            Team(teamName)
 
     def reload(self):
         """This one is for when the program is reopened, but initilisation is not to be done again"""
