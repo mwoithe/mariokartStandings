@@ -8,18 +8,20 @@ class Result:
     def __init__(self, string, trackName, raceID):
         data = string.split(",")
         if len(data) != 2:
-            raise e.DataReadError("Whoever did the checks should be sacked. This should not have got to here")
+            raise e.DataReadError("raceResult.py","Whoever did the checks should be sacked. This should not have got to here")
         
-        if data[0] in Player.playerList:
-            self.name = data[0]
-        else:
-            raise e.DataReadError("Whoever did the checks should be sacked. This should not have got to here")
-        
+        # if data[0] in Player.playerList:
+        #     self.name = data[0]
+        # else:
+        #     pass
+            # raise e.DataReadError("raceResult.py","Whoever did the checks should be sacked. This should not have got to here")
+        self.name = data[0]
         self.placing = int(data[1])
         self.points = Result.pointsAllocation[self.placing]
         self.track = trackName
         self.raceID = raceID
 
+    # TODO: um...
     def __lt__(self, other):
         return self.placing < other.placing
     

@@ -21,6 +21,7 @@ class Team:
             return
         
         for team in Team.teams:
+            # If the team already exists, refresh it
             if team.name == teamName:
                 print(f"team {teamName} already exists")
                 team.refresh(colour=colour)
@@ -29,7 +30,7 @@ class Team:
         self.name = teamName
         self.fileName = f"mariokartStandings/data/teams/{teamName}.txt"
 
-        self.form = form
+        # self.form = form
         self.colour = self.getTeamColour()
         self.members = self.getTeamMembers()
 
@@ -105,9 +106,6 @@ class Team:
                 self.wins == other.wins and
                 self.podiums == other.podiums and
                 self.spoons == other.spoons)
-    
-    def showTeamReport(self):
-        pass
     
     def getTeamMembers(self):
         """
@@ -237,7 +235,7 @@ class Team:
     def getPlayerColour(cls, player_name):
         for team in Team.teams:
             for player in team.members:
-                if player.name == player_name:
+                if player.name.get_name() == player_name or player.name.get_current() == player_name:
                     return team.colour
 
     @classmethod
@@ -256,10 +254,10 @@ class Team:
         found_in = None
         for team in Team.teams:
             for player in team.members:
-                if player.name == player_name and team.name == self.name:
+                if player.name.get_name() == player_name and team.name == self.name:
                     print(f"Player `{player_name}` is already in team `{self.name}`")
                     return
-                elif player.name == player_name:
+                elif player.name.get_name() == player_name:
                     found_in = team
                     if input(f"Player `{player_name}` is already in team `{team.name}`. \nDo you wish to remove them from {team.name} and add to `{self.name}`? \nType 'yes' to proceed\n") != "yes":
                         return
@@ -280,8 +278,9 @@ class Team:
         return
 
     def removePlayer(self, player_name):
-        if p.Player.getPlayerByName(player_name) not in self.members:
-            print(f"Couldn't remove player `{player_name}` from team `{self.name}` - `{player_name}` is not in team `{self.name}`")
+        player = p.Player.getPlayerByName(player_name)
+        if player not in self.members:
+            print(f"Couldn't remove player `{player.name.get_name()}` from team `{self.name}` - `{player.name.get_name()}` is not in team `{self.name}`")
             return
         
         f = open(self.fileName, "r")
@@ -292,12 +291,12 @@ class Team:
         success = False
 
         for line in data:
-            if line[0:7] == "member=" and line[7:] == player_name:
+            if line[0:7] == "member=" and line[7:] == player.name.get_name():
                 success = True
             else:
                 f.write(line + "\n")
 
         f.close()
-        print(f"`{player_name}` successfully removed from `{self.name}`")
+        print(f"`{player.name.get_name()}` successfully removed from `{self.name}`")
         self.members = self.getTeamMembers()
         return

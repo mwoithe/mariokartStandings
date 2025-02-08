@@ -73,7 +73,7 @@ class Race:
                 if test[0] == "" or test[1] == "":
                     raise e.DataInputError(Race.dataFile, f"Something's wrong with data entry #{entry}: At least one entry is empty")
                 else:
-                    if test[0] not in Player.playerList:
+                    if Player.getPlayerByName(test[0]) == None:
                         raise e.DataInputError(Race.dataFile, f"Something's wrong with data entry #{entry}: {test[0]} is not a listed player")
                     
                     try:
@@ -128,6 +128,7 @@ class Race:
         placings = raceData.split("\n")
         res = []
         for place in placings:
+            print(place)
             res.append(Result(place, self.track, self.id))
         
         res.sort(reverse=False)

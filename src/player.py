@@ -1,6 +1,7 @@
 from exceptions import NoDataError
 import team
 from display import Display
+from name import Name
 
 def get_players():
     f = open("mariokartStandings/init/players.txt", "r")
@@ -25,7 +26,7 @@ class Player:
                 player.refresh(form)
                 return
 
-        self.name = name
+        self.name = Name(name)
         self.fileName = f"mariokartStandings/data/players/{name}.csv"
         self.form = form
         self.colour = team.Team.getPlayerColour(name)
@@ -43,7 +44,7 @@ class Player:
     def refresh(self, form):
         # print(f"Refreshing `{self.name}`")
         self.form = form
-        self.colour = team.Team.getPlayerColour(self.name)
+        self.colour = team.Team.getPlayerColour(self.name.get_name())
         self.data = self.getPlayerData()
         self.points = self.calcPlayerScore()
         # print(f"self.points = {self.points}")
@@ -94,14 +95,17 @@ class Player:
             return False
         
     def __eq__(self, other):
-        return (self.points == other.points and
+        if other == None:
+            return False
+        else:
+            return (self.points == other.points and
                 self.wins == other.wins and
                 self.podiums == other.podiums and
                 self.spoons == other.spoons)
     
     def logRaceResult(self, result):
         # "name,raceID,track,placing,points"
-        log = f"\n{self.name},{result.raceID},{result.track},{result.placing},{result.points}"
+        log = f"\n{self.name.get_current()},{result.raceID},{result.track},{result.placing},{result.points}"
         f = open(self.fileName, "a")
         f.write(log)
         f.close()
@@ -122,7 +126,7 @@ class Player:
             if len(data)-1 < self.form:
                 raise NoDataError(f"Number of races requested ({self.form}) exceeds available race data ({len(data)-1})")
             elif len(data) == 1:
-                raise NoDataError(f"Player '{self.name}' has no race data availabe")
+                raise NoDataError(f"Player '{self.name.get_name()}' has no race data availabe")
             return data
         except NoDataError as e:
             print(e.message)
@@ -168,12 +172,13 @@ class Player:
         return score
 
     def getPlayerBar(self, pos):
+        ## TODO Using get_name(), may want get_current(). Not sure at this point
         return f"""<div class="player-row {self.colour}">
             <div class="col-1 row-col">
                 {pos}
             </div>
             <div class="col-3 row-col">
-                {self.name}
+                {self.name.get_name()} 
             </div>
             <div class="col-2 row-col">
                 {self.points}
@@ -190,9 +195,21 @@ class Player:
         </div>"""
     
     @classmethod
+    # Returns a match if name given matches either name or current alias
     def getPlayerByName(cls, name):
         for player in cls.players:
-            if player.name == name:
+            if player.name.get_name() == name or player.name.get_current() == name:
                 return player
         
         return None
+    
+    def __str__(self):
+        return f"Player `{self.name.get_name()}` (currently known as `{self.name.get_current()}`): {self.points} points, {self.wins} wins, {self.podiums} podiums and {self.spoons} spoons."
+    
+    def changeName(self, newname):
+        for p in Player.players:
+            if p.name.get_name() == newname or p.name.get_current() == newname:
+                print(f"ERROR: could not change `{self.name.get_name()}`'s name. Alias `{newname}` already in use")
+                return
+
+        self.name.set_current(newname)

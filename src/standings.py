@@ -59,7 +59,7 @@ class Standings:
         pos = 1
         for player in players:
             html += player.getPlayerBar(pos)
-            message += f"{pos}\t{player.name}\t{player.points}\t{player.wins}\t{player.podiums}\t{player.spoons}\n"
+            message += f"{pos}\t{player.name.get_current()}\t{player.points}\t{player.wins}\t{player.podiums}\t{player.spoons}\n"
             pos += 1
         
         html += tail
