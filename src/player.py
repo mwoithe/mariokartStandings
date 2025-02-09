@@ -17,12 +17,12 @@ class Player:
         Display.set_num_players(len(Player.playerList))
 
         if name not in Player.playerList:
-            print(f"WARNING: `{name}` is not a registered player.")
+            print(f"<WARNING> `{name}` is not a registered player.")
             return
         
         for player in Player.players:
-            if player.name == name:
-                print(f"Player `{name}` already exists")
+            if player.name.get_name() == name:
+                print(f"<INFO> Refreshing player `{name}`.")
                 player.refresh(form)
                 return
 
@@ -39,7 +39,7 @@ class Player:
         Player.players.append(self)
 
         # print(name, "colour = ", self.colour)
-        print(f"Registered player {name}. Number of registered players = {len(Player.players)}")
+        print(f"<INFO> Registered player {name}. Number of registered players = {len(Player.players)}")
 
     def refresh(self, form):
         # print(f"Refreshing `{self.name}`")
@@ -124,9 +124,9 @@ class Player:
         
         try:
             if len(data)-1 < self.form:
-                raise NoDataError(f"Number of races requested ({self.form}) exceeds available race data ({len(data)-1})")
+                raise NoDataError("player.py", f"Number of races requested ({self.form}) exceeds available race data ({len(data)-1})")
             elif len(data) == 1:
-                raise NoDataError(f"Player '{self.name.get_name()}' has no race data availabe")
+                raise NoDataError("player.py", f"Player `{self.name.get_name()}` has no race data availabe")
             return data
         except NoDataError as e:
             print(e.message)
@@ -209,7 +209,8 @@ class Player:
     def changeName(self, newname):
         for p in Player.players:
             if p.name.get_name() == newname or p.name.get_current() == newname:
-                print(f"ERROR: could not change `{self.name.get_name()}`'s name. Alias `{newname}` already in use")
+                print(f"<WARNING> Could not change `{self.name.get_name()}`'s alias: Alias `{newname}` already in use")
                 return
 
         self.name.set_current(newname)
+        print(f"<INFO> Player `{self.name.get_name()}`'s alias successfully changed to `{self.name.get_current()}`")

@@ -13,13 +13,13 @@ class Init:
     def __init__(self):
         try:
             checkFile = open("mariokartStandings/init/init.txt", "r")
-            print("Warning: Initialisation has already been completed, doing so again will reset the whole thing. Procede with EXTREME CATUTION")
+            print("<INFO> Initialisation has already been completed")
             checkFile.close()
-            print("Reloading...")
+            print("<INFO> Reloading...")
             self.reload()
             return
-        except FileNotFoundError as e:
-            print("Starting init")
+        except FileNotFoundError:
+            print("<INFO> Starting init")
 
         # set up check file so this doesn't get done again
         f = open("mariokartStandings/init/init.txt", "w")

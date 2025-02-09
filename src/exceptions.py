@@ -17,15 +17,15 @@ class DataError(Exception):
 class DataInputError(DataError):
     """Thrown when checking a data stream if there's something abnormal"""
     def __init__(self, file, reason):
-        super().__init__(f"In file \"{file}\": {reason}")
+        super().__init__(f"<ERROR> In file `{file}`: {reason}")
 
 class DataReadError(DataError):
     """Thrown when there is an error with the data post-input.
     This is quite serious, as some data may have already been read and inserted, making the clean up messy"""
     def __init__(self, file, reason):
-        super().__init__(f"In file \"{file}\": {reason}")
+        super().__init__(f"<ERROR> In file `{file}`: {reason}")
 
 class NoDataError(DataError):
     """Thrown when we try to access data that doesn't exist"""
-    def __init__(self, message):
-        super().__init__(message)
+    def __init__(self, file, reason):
+        super().__init__(f"<ERROR> In file `{file}`: {reason}")

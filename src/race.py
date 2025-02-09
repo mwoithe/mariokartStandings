@@ -11,9 +11,9 @@ class Race:
             self.track = None
             self.id = None
             if self.readData():
-                input("Data logging complete")
+                print("<INFO> Data logging complete")
         else:
-            input("Insertion cancelled [press enter to exit]")
+            print("<INFO> Insertion cancelled")
     
     def checkData(self):
         print("\n----------------------------------------\n",
@@ -34,7 +34,7 @@ class Race:
             if len(track) == 0:
                 raise e.DataInputError(Race.dataFile, "No trackName found")
             else:
-                raise e.DataInputError(Race.dataFile, "More than one 'trackName' field was found")
+                raise e.DataInputError(Race.dataFile, "More than one trackName field was found")
         else:
             track = track[0][10:]
         
@@ -46,7 +46,7 @@ class Race:
             if len(id) == 0:
                 raise e.DataInputError(Race.dataFile, "No raceID number found. If field exists, please check the value is a number")
             else:
-                raise e.DataInputError(Race.dataFile, "More than one 'raceID' field was found")
+                raise e.DataInputError(Race.dataFile, "More than one raceID field was found")
         else:
             id = int(id[0][7:])
             f = open("mariokartStandings/data/races/usedIDs.txt", "r")
@@ -55,7 +55,7 @@ class Race:
             nums = nums.split("\n")
             for num in nums:
                 if num == str(id):
-                    raise e.DataInputError(Race.dataFile, f"raceID '{num}' has already been used")
+                    raise e.DataInputError(Race.dataFile, f"raceID `{num}` has already been used")
 
         print("Race ID OK")
 
@@ -81,22 +81,21 @@ class Race:
                         if not 1 <= place <= len(Player.playerList):
                             raise ValueError
                     except ValueError:
-                        raise e.DataInputError(Race.dataFile, f"Something's wrong with data entry #{entry}: '{test[1]}' is not a valid placing")
+                        raise e.DataInputError(Race.dataFile, f"Something's wrong with data entry #{entry}: `{test[1]}` is not a valid placing")
                     
                     if place not in places:
                         places.append(place)
                     else:
-                        raise e.DataInputError(Race.dataFile, f"Something's wrong with data entry #{entry}: placing '{test[1]}' has been used more than once")
+                        raise e.DataInputError(Race.dataFile, f"Something's wrong with data entry #{entry}: placing `{test[1]}` has been used more than once")
                     
                     print(f"Data entry #{entry} OK")
             
             entry += 1
 
-        if input("\n\nData check complete. \nDo you wish to log this result? " +
-              "\nWARNING: Faulty data is very hard to undo, and may cause catastrophic issues. " +
-              "\nOnly proceed if ALL tests have passed, and you are sure no errors are present. " +
-              "\nThe previous checks DO NOT GUARANTEE no errors are present" +
-              "\n\nDo you wish to proceed? [Type 'yes' to proceed, any other input cancels]\n") == "yes":
+        print("<INFO> \n\nData check complete. \nOnly proceed if ALL tests have passed, and you are sure no errors are present. " +
+              "\nThe previous checks DO NOT GUARANTEE no errors are present\n")
+
+        if input("\n<INPUT REQUEST> Do you wish to proceed? [Type 'yes' to proceed, any other input cancels]\n+ ") == "yes":
             return True
         else:
             return False
@@ -128,7 +127,7 @@ class Race:
         placings = raceData.split("\n")
         res = []
         for place in placings:
-            print(place)
+            # print(place)
             res.append(Result(place, self.track, self.id))
         
         res.sort(reverse=False)

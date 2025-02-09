@@ -17,13 +17,13 @@ class Team:
         Display.set_num_teams(len(Team.teamList))
 
         if teamName not in Team.teamList:
-            print(f"WARNING: `{teamName}` is not a registered team.")
+            print(f"<WARNING> `{teamName}` is not a registered team.")
             return
         
         for team in Team.teams:
             # If the team already exists, refresh it
             if team.name == teamName:
-                print(f"team {teamName} already exists")
+                print(f"<INFO> Refreshing team {teamName}.")
                 team.refresh(colour=colour)
                 return
 
@@ -41,7 +41,7 @@ class Team:
 
         Team.teams.append(self)
         # print(f"{teamName} = {self.colour}")
-        print(f"Registered team {teamName}. Number of registered teams = {len(Team.teams)}")
+        print(f"<INFO> Registered team {teamName}. Number of registered teams = {len(Team.teams)}")
         
     def refresh(self, colour=""):
         if colour != "":
@@ -98,7 +98,6 @@ class Team:
             return False
         
     def __eq__(self, other):
-        print(type(other))
         if type(other) != type(self) or other is None:
             return False
         else:
@@ -156,7 +155,7 @@ class Team:
         ]
 
         if new_colour not in colour_list:
-            print("Colour was not changed - colour not valid")
+            print("<WARNING> Colour was not changed - colour not valid")
             return
 
         f = open(self.fileName, "r")
@@ -178,7 +177,7 @@ class Team:
             success = True
 
         f.close()
-        print(f"{self.name}'s colour successfully changed to {new_colour}")
+        print(f"<INFO> Team `{self.name}`'s colour successfully changed to {new_colour}")
         return
     
     def calcTeamScore(self):
@@ -247,7 +246,7 @@ class Team:
     
     def addPlayer(self, player_name):
         if player_name not in p.Player.playerList:
-            print(f"Player not assigned - `{player_name}` not a valid player")
+            print(f"<WARNING> Player `{player_name}` could not be assigned  - `{player_name}` is not a registered player")
             return
         
         # Check if player is in another team
@@ -255,11 +254,12 @@ class Team:
         for team in Team.teams:
             for player in team.members:
                 if player.name.get_name() == player_name and team.name == self.name:
-                    print(f"Player `{player_name}` is already in team `{self.name}`")
+                    print(f"<INFO> Player `{player_name}` is already in team `{self.name}`.")
                     return
                 elif player.name.get_name() == player_name:
                     found_in = team
-                    if input(f"Player `{player_name}` is already in team `{team.name}`. \nDo you wish to remove them from {team.name} and add to `{self.name}`? \nType 'yes' to proceed\n") != "yes":
+                    print(f"<INFO> Player `{player_name}` is already in team `{team.name}`")
+                    if input(f"\n<INPUT REQUEST> Do you wish to remove them from {team.name} and add to `{self.name}`? [Type 'yes' to proceed]\n+ ") != "yes":
                         return
                     # break
 
@@ -273,14 +273,14 @@ class Team:
         f.close()
 
 
-        print(f"`{player_name}` successfully added to `{self.name}`")
+        print(f"<INFO> Player `{player_name}` successfully added to team `{self.name}`.")
         self.members = self.getTeamMembers()
         return
 
     def removePlayer(self, player_name):
         player = p.Player.getPlayerByName(player_name)
         if player not in self.members:
-            print(f"Couldn't remove player `{player.name.get_name()}` from team `{self.name}` - `{player.name.get_name()}` is not in team `{self.name}`")
+            print(f"<WARNING> Couldn't remove player `{player.name.get_name()}` from team `{self.name}` - `{player.name.get_name()}` is not in team `{self.name}`")
             return
         
         f = open(self.fileName, "r")
@@ -297,6 +297,6 @@ class Team:
                 f.write(line + "\n")
 
         f.close()
-        print(f"`{player.name.get_name()}` successfully removed from `{self.name}`")
+        print(f"<INFO> Player `{player.name.get_name()}` successfully removed from team `{self.name}`")
         self.members = self.getTeamMembers()
         return

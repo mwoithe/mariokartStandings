@@ -53,18 +53,19 @@ def logData():
     # r.readData()
 
 def changeTeamColour():
-    teamName = input("Which teams colour would you like to change? ")
+    teamName = input("\n<INPUT REQUEST> Which teams colour would you like to change?\n+ ")
     if teamName not in team.Team.teamList:
-        print(f"WARNING: `{teamName}` is not a registered team.")
+        print(f"<WARNING> `{teamName}` is not a registered team.")
         return
     
-    colour = input(f"What should {teamName}'s new colour be? ")
+    colour = input(f"\n<INPUT REQUEST> What should {teamName}'s new colour be?\n+ ")
     team.Team(teamName, colour=colour.lower())
 
 ### button press handlers
-form_list = [-1,1,5,10,20]
+form_list = [1,5,10,20,-1]
 def refreshDisplay():
     try:
+        print("<INFO> Refreshing display...")
         start = time.time()
         stand = Standings()
         for num in form_list:
@@ -77,29 +78,32 @@ def refreshDisplay():
 
 
 def teamAddPlayer():
-    playername = input(f"Which player are you adding to a team? ")
+    playername = input(f"\n<INPUT REQUEST> Which player are you adding to a team?\n+ ")
 
     if playername not in player.Player.playerList:
-        print(f"WARNING: `{playername}` is not a registered player.")
+        print(f"<WARNING> `{playername}` is not a registered player.")
         return
 
-    teamName = input(f"Which team should {playername} be in? ")
+    teamName = input(f"\n<INPUT REQUEST> Which team should {playername} be in?\n+ ")
     if teamName not in team.Team.teamList:
-        print(f"WARNING: `{teamName}` is not a registered team.")
+        print(f"<WARNING> `{teamName}` is not a registered team.")
         return
     
     team.Team.getTeamByName(teamName).addPlayer(playername)
 
 def getPlayer():
-    playername = input(f"Which player do you want? ")
+    playername = input(f"\n<INPUT REQUEST> Which player do you want?\n+ ")
     
-    print(player.Player.getPlayerByName(playername))
+    print(f"<INFO> {player.Player.getPlayerByName(playername)}")
 
 def changePlayerAlias():
-    playername = input(f"Which player's name do you want to change? ")
-    newname = input(f"what would you like to change `{playername}`'s name to? ")
-
+    playername = input(f"\n<INPUT REQUEST> Which player's name do you want to change?\n+ ")
     person = player.Player.getPlayerByName(playername)
+    if person is None:
+        print(f"<WARNING> `{playername}` is not a registered player")
+        return
+
+    newname = input(f"\n<INPUT REQUEST> What would you like to change `{playername}`'s name to? \n+ ")
 
     person.changeName(newname)
 
