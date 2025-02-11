@@ -122,15 +122,21 @@ class Player:
             data.append(line.split(","))
             n+=1
         
-        try:
-            if len(data)-1 < self.form:
-                raise NoDataError("player.py", f"Number of races requested ({self.form}) exceeds available race data ({len(data)-1})")
-            elif len(data) == 1:
-                raise NoDataError("player.py", f"Player `{self.name.get_name()}` has no race data availabe")
-            return data
-        except NoDataError as e:
-            print(e.message)
-            return []
+        # try:
+        #     if len(data)-1 < self.form:
+        #         raise NoDataError("player.py", f"Number of races requested ({self.form}) exceeds available race data ({len(data)-1})")
+        #     elif len(data) == 1:
+        #         raise NoDataError("player.py", f"Player `{self.name.get_name()}` has no race data availabe")
+        #     return data
+        # except NoDataError as e:
+        #     print(e.message)
+        #     return []
+
+        if len(data)-1 < self.form:
+            raise NoDataError("player.py", f"Number of races requested ({self.form}) exceeds available race data ({len(data)-1})")
+        elif len(data) == 1:
+            raise NoDataError("player.py", f"Player `{self.name.get_name()}` has no race data availabe")
+        return data
     
     def calcPlayerScore(self):
         data = self.data[(-self.form):]

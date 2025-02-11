@@ -62,15 +62,22 @@ def changeTeamColour():
     team.Team(teamName, colour=colour.lower())
 
 ### button press handlers
-form_list = [1,5,10,20,-1]
+form_list = [1,5,10,20]
 def refreshDisplay():
     try:
         print("<INFO> Refreshing display...")
         start = time.time()
         stand = Standings()
-        for num in form_list:
-            stand.displayTeamStandings(num)
-            stand.displayIndStandings(num)
+        try:
+            for num in form_list:
+                stand.displayTeamStandings(num)
+                stand.displayIndStandings(num)
+        except e.NoDataError as fail:
+            print(fail.message)
+
+        # I want the last one called to be overall so the player summaries show that
+        stand.displayTeamStandings()
+        stand.displayIndStandings()
         end = time.time()
         showTime(end-start)
     except e.DataError as failure:

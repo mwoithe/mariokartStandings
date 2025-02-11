@@ -155,6 +155,27 @@ article {
     color: #996600;
 }
 
+.dark-grey {
+    background-color: #5a5d60;
+    color: #1c1c1d;
+}
+
+.black {
+    background-color: #1c1c1d;
+    color: #ffffff;
+}
+
+.white {
+    background-color: #ebeced;
+    color: #898989;
+}
+
+.maroon {
+    background-color: #cc5978;
+    color: #3f0f1d;
+}
+
+
 
 /* . {
     background-color: #;

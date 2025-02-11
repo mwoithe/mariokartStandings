@@ -151,7 +151,11 @@ class Team:
             "purple",
             "red",
             "sky",
-            "yellow"
+            "yellow",
+            "dark-grey",
+            "black",
+            "white",
+            "maroon"
         ]
 
         if new_colour not in colour_list:
